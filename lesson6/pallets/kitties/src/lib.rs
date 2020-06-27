@@ -39,7 +39,6 @@ decl_error! {
 		InvalidKittyId,
 		RequireDifferentParent,
 		RequireOwner,
-		NotKittyOwner,
 	}
 }
 
