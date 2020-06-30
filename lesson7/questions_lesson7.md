@@ -1,6 +1,6 @@
 - 补齐代码
 - 单元测试
-[!task2.1](./unit_test.png)
+![task2.1](./unit_test.png)
 
 - 阅读 pallet-membership
 * 分析 add_member 的计算复杂度
