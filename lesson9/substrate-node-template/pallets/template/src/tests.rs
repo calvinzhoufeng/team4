@@ -14,5 +14,11 @@ fn test_onchain() {
 fn test_offchain() {
 	new_test_ext().execute_with(|| {
 		// Test offchain worker here
+		let (mut t, pool_state, _offchain_state) = ExtBuilder::build();
+	
+		t.execute_with(|| {
+			let r = TemplateModule::fetch_eth_price_cc();
+			// assert_ok!(r.is_ok());
+		});
 	});
 }

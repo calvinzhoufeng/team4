@@ -1,7 +1,19 @@
 // Creating mock runtime here
 
 use crate::{Module, Trait};
-use sp_core::H256;
+use sp_core::{
+	H256,
+	offchain::{
+		testing::{self, OffchainState, PoolState},
+		OffchainExt, TransactionPoolExt,
+	},
+	sr25519::{self, Signature},
+	testing::KeyStore,
+	traits::KeystoreExt,
+};
+use parking_lot::RwLock;
+use sp_io::TestExternalities;
+use codec::{alloc::sync::Arc};
 use frame_support::{impl_outer_origin, parameter_types, weights::Weight};
 use sp_runtime::{
 	traits::{BlakeTwo256, IdentityLookup}, testing::Header, Perbill,
@@ -57,4 +69,36 @@ pub type TemplateModule = Module<Test>;
 // our desired mockup.
 pub fn new_test_ext() -> sp_io::TestExternalities {
 	system::GenesisConfig::default().build_storage::<Test>().unwrap().into()
+}
+
+pub struct ExtBuilder;
+
+impl ExtBuilder {
+	pub fn build() -> (
+		TestExternalities,
+		Arc<RwLock<PoolState>>,
+		Arc<RwLock<OffchainState>>,
+	) {
+		const PHRASE: &str =
+			"expire stage crawl shell boss any story swamp skull yellow bamboo copy";
+
+		let (offchain, offchain_state) = testing::TestOffchainExt::new();
+		let (pool, pool_state) = testing::TestTransactionPoolExt::new();
+		// let keystore = KeyStore::new();
+		// keystore
+		// 	.write()
+		// 	.sr25519_generate_new(KEY_TYPE, Some(&format!("{}/hunter1", PHRASE)))
+		// 	.unwrap();
+
+		let storage = system::GenesisConfig::default()
+			.build_storage::<Test>()
+			.unwrap();
+
+		let mut t = TestExternalities::from(storage);
+		t.register_extension(OffchainExt::new(offchain));
+		t.register_extension(TransactionPoolExt::new(pool));
+		// t.register_extension(KeystoreExt(keystore));
+		// t.execute_with(|| System::set_block_number(1));
+		(t, pool_state, offchain_state)
+	}
 }

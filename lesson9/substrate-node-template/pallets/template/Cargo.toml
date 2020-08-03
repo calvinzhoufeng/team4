@@ -8,6 +8,12 @@ name = 'pallet-template'
 repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'
 version = '2.0.0-rc2'
 
+[dependencies]
+parking_lot = "0.10.0"
+sp-std = { git = 'https://github.com/paritytech/substrate', tag = 'v2.0.0-rc2', version = '2.0.0-rc2', default-features = false }
+alt_serde = { version = "1", default-features = false, features = ["derive"] }
+serde_json = { version = "1", default-features = false, git = "https://github.com/Xanewok/json", branch = "no-std", features = ["alloc"] }
+
 [dependencies.codec]
 default-features = false
 features = ['derive']
@@ -21,6 +27,18 @@ tag = 'v2.0.0-rc2'
 version = '2.0.0-rc2'
 
 [dependencies.frame-system]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-rc2'
+version = '2.0.0-rc2'
+
+[dependencies.sp-io]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-rc2'
+version = '2.0.0-rc2'
+
+[dependencies.sp-runtime]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc2'
@@ -50,4 +68,7 @@ std = [
     'codec/std',
     'frame-support/std',
     'frame-system/std',
+    'sp-runtime/std',
+    'sp-std/std',
+    'sp-io/std',
 ]
